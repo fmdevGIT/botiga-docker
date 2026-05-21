@@ -44,25 +44,27 @@ Esta combinación (Docker + MongoDB) es ideal para entornos de desarrollo ágil 
 
 ## Software Design Document (SDD)
 
-### Bloque 0
-
 **Checklist del Proyecto**
 
-* [ ] **Configuración del SCV (GitHub)**
+- [x] **Configuración del SCV (GitHub)**
 
-* [ ] **Creación de la estructura de carpetas en WSL**
+- [x] **Creación de la estructura de carpetas en WSL**
 
-* [ ] **Instrucciones de instalación y puesta en marcha**
+- [ ] **Instrucciones de instalación y puesta en marcha**
 
-* [ ] **Estructura de ficheros**
+- [ ] **Estructura de ficheros**
 
-* [ ] **Comandos principales para operar el entorno (como hacer consultas y crear datos)**
+- [ ] **Comandos principales para operar el entorno (como hacer consultas y crear datos)**
 
-* [ ] **Explicación de los volúmenes i redes configuradas**
+- [ ] **Explicación de los volúmenes i redes configuradas**
 
-* [ ] **Instalación y configuración de Docker y Compose**
+- [ ] **Instalación y configuración de Docker y Compose**
 
-### Configuracion del SCV en la nube
+### 
+
+### Bloque 0
+
+#### Configuracion del SCV en la nube
 
 La configuración del Sistema de Control de Versiones (GitHub) al inicio es una buena práctica, ya que permite establecer una **línea base** del proyecto, garantizar la **trazabilidad de los cambios** (histórico) y facilitar la **colaboración** desde el inicio del desarrollo.
 
@@ -84,7 +86,7 @@ sudo git clone https://github.com/<usuario>/<nombre_del_repositorio>
 
 
 
-### Creación de la estructura de carpetas en WSL
+#### Creación de la estructura de carpetas en WSL
 
 Crearemos la siguiente estructura de carpetas para albergar nuestro proyecto.
 
@@ -98,4 +100,82 @@ practica-mongodb/
 │ └── advanced.js # Consultes avançades
 ├── data/ # Volum de dades (auto-generat)
 └── README.md # Documentació del projecte
+```
+
+Podemos utilizar el siguiente script:
+
+```bash
+#!/bin/bash
+
+# Nombre del directorio principal
+MAIN_DIR="practica-mongodb"
+
+echo "Creando estructura de carpetas para: ${MAIN_DIR}"
+
+# Crear directorio principal
+mkdir -p "$MAIN_DIR"
+
+# Crear subdirectorios
+mkdir -p "$MAIN_DIR/mongo-init"
+mkdir -p "$MAIN_DIR/queries"
+mkdir -p "$MAIN_DIR/data"
+
+# Crear archivos vacíos
+touch "$MAIN_DIR/docker-compose.yml"
+touch "$MAIN_DIR/mongo-init/init.js"
+touch "$MAIN_DIR/queries/crud.js"
+touch "$MAIN_DIR/queries/advanced.js"
+touch "$MAIN_DIR/README.md"
+
+echo "Estructura creada correctamente:"
+echo "practica-mongodb/"
+echo "├── docker-compose.yml"
+echo "├── mongo-init/"
+echo "│   └── init.js"
+echo "├── queries/"
+echo "│   ├── crud.js"
+echo "│   └── advanced.js"
+echo "├── data/"
+echo "└── README.md"
+```
+
+
+Podemos ejecutarlo con:
+
+```bash
+chmod +x crear_estructura.sh #-> Asignar permisos de ejecución
+./crear_estructura.sh
+```
+
+### Bloque 1
+
+#### Instrucciones de instalación y puesta en marcha
+
+**Consideraciones previas**
+
+El servicio MongoDB requiere usuario y contraseña y es buena práctica de seguridad no incluir en el código fuente, los usuarios y contraseñas. Docker proporciona una solución para dicho problema al construir los contenedores rearemos el archivo `.env`
+
+##### MongoDB
+
+El servicio MongoDB requiere usuario y contraseña y es buena práctica de seguridad no incluirlos. Docker proporciona una solución para dicho problema al construir los contenedores mediante el archivo `.env`.
+
+Este archivo contiene las variables de entorno sensibles que serán **inyectadas en los contenedores en tiempo de ejecución**, sin necesidad de hardcodearlas en el `docker-compose.yml` o en los scripts de inicialización.
+
+Este archivo `.env` es detectado por docker compose automaticamente si ambos archivos se encuentran en la misma carpeta
+
+En nuestro caso:
+
+```bash
+MONGO_USER=admin
+MONGO_PASSWORD=admin1234
+```
+
+Para evitar que el archivo `.env` sea subido al repositorio, y por lo tanto accesible, lo añadiremos al `.gitignore`
+
+```bash
+git push --force origin <nombre-de-la-rama>
+```
+
+```
+
 ```
