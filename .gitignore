@@ -1,1 +1,18 @@
+# Datos persistentes de MongoDB
+data/
+
+# Archivos del sistema
+.DS_Store
+Thumbs.db
+*.log
+
+# Archivos de entorno
 .env
+.env.local
+.env.production
+
+# Editor específico
+.vscode/
+.idea/
+*.swp
+*.swo
