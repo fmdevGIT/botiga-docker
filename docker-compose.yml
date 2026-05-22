@@ -10,7 +10,7 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
       MONGO_INITDB_DATABASE: admin  # <-- AÑADE ESTA LÍNEA
     volumes:
-
+      - ./data:/data/db
       - ./mongo-init:/docker-entrypoint-initdb.d
       - ./queries:/queries
     networks:
